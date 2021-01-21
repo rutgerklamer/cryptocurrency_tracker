@@ -14,7 +14,17 @@ body {
 .settings {
   width: 80%;
   margin-left: 10%;
-  background-color: var(--bgColor);
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+}
+
+.settingsItem {
+ flex: 0 0 90%;
+}
+
+.settingsItem:hover {
+  background-color: var(--infoColorSelect);
 }
 
 .dashboard {
@@ -23,7 +33,7 @@ body {
   background-color: var(--bgColor);
 }
 
-.coin {
+.coin, .options {
   display: flex;
   flex-wrap: nowrap;
   background-color: var(--infoColor);
@@ -37,7 +47,10 @@ body {
 a:hover {
   cursor: pointer;
 }
+.name {
+  flex: 0 0 20%;
 
+}
 a {
   width: 100%;
   text-align: inherit;
@@ -67,6 +80,28 @@ canvas {
   border-width: 0 3px 3px 0;
   display: inline-block;
   padding: 3px;
+  text-align:center;
+}
+
+.arrow:hover {
+}
+
+.next, .prev {
+  text-align: center;
+}
+
+.next:hover, .prev:hover {
+   background-color: var(--infoColorSelect);
+}
+
+.left {
+  transform: rotate(-225deg);
+  -webkit-transform: rotate(-225deg);
+}
+
+.right {
+  transform: rotate(315deg);
+  -webkit-transform: rotate(315deg);
 }
 
 .up {

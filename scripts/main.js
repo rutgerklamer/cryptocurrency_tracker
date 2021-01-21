@@ -1,10 +1,12 @@
 let topCoins;
 let topCoinAmount = 100;
 let currency = "$"
+let pageCount = 1;
+const geckoApiLink = "https://api.coingecko.com/api/v3";
 
 $( document ).ready(function() {
-    const geckoApiLink = "https://api.coingecko.com/api/v3";
-    topCoins = JSON.parse(httpGet(geckoApiLink+getTopCoins(topCoinAmount)));
+    topCoins = JSON.parse(httpGet(geckoApiLink+getTopCoins(topCoinAmount,pageCount)));
+    console.log(topCoins);
     for (i = 0; i < topCoinAmount; i++) {
       addCoinToDashboard(topCoins[i]);
     }
@@ -12,8 +14,30 @@ $( document ).ready(function() {
 
 });
 
+function changePage(nextPage) {
+  if (nextPage || pageCount > 1) {
+    $(".dashboard").empty();
+    $(".dashboard").append('<div class="coin">     <a  class="name" onclick="sortByRank(true)" style="margin-left: 48px">Coin </a>      <a  onclick="sortByPrice(false)">Price per coin</a> <a  onclick="sortByPriceChange1h(false)">Change 1 hrs</a>  <a onclick="sortByPriceChange24h(false)">Change 24 hrs</a><a onclick="sortByPriceChange7d(false)">Change 7 days</a><a onclick="sortByTotalVolume(false)">Total volume</a><a onclick="sortByPriceChange7d(false)">7 day graph</a></div>');
+  }
+  if (nextPage) {
+    pageCount++;
+    topCoins = JSON.parse(httpGet(geckoApiLink+getTopCoins(topCoinAmount, pageCount)));
+    for (i = 0; i < topCoinAmount; i++) {
+      addCoinToDashboard(topCoins[i]);
+    }
+  } else if (pageCount > 1) {
+    pageCount--;
+    topCoins = JSON.parse(httpGet(geckoApiLink+getTopCoins(topCoinAmount, pageCount)));
+    for (i = 0; i < topCoinAmount; i++) {
+      addCoinToDashboard(topCoins[i]);
+    }
+  }
+  console.log(pageCount);
+}
+
+
 function getTopCoins(amount) {
-  return "/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=" + amount + "&page=1&sparkline=true&price_change_percentage=1h,24h,7d&";
+  return "/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=" + amount + "&page="+pageCount+"&sparkline=true&price_change_percentage=1h,24h,7d&";
 }
 
 function addCoinToDashboard(coin) {
@@ -25,7 +49,7 @@ function addCoinToDashboard(coin) {
   newCanvas.id = coin["id"];
 
 
-  $(".dashboard").append( '<div class="coin"> <img src='+ coin["image"] +'> <a> #' + coin["market_cap_rank"] + ' ' +  coin["name"]   + '</a> <a> '+currency + coin["current_price"].toLocaleString('en') + '</a> ' + changePercentage1h +  changePercentage24h + changePercentage7d + '<a>' +currency + coin["total_volume"].toLocaleString('en') + '</a><a> <canvas id="'+coin["id"]+'"></canvas>');
+  $(".dashboard").append( '<div class="coin"> <img src='+ coin["image"] +'> <a class="name"> #' + coin["market_cap_rank"] + ' ' +  coin["name"]   + '</a> <a> '+currency + coin["current_price"].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') + '</a> ' + changePercentage1h +  changePercentage24h + changePercentage7d + '<a>' +currency + coin["total_volume"].toLocaleString('en') + '</a><a> <canvas id="'+coin["id"]+'"></canvas>');
 
   if (coin["sparkline_in_7d"]["price"][0] < coin["sparkline_in_7d"]["price"][coin["sparkline_in_7d"]["price"].length-1]) {
     var chart = new Graph({ data: coin["sparkline_in_7d"]["price"], target: document.getElementById(coin["id"]), lineWidth: 1, lineColor: greenColor, background: 'transparent' })
@@ -34,8 +58,9 @@ function addCoinToDashboard(coin) {
   }
 
   $(".dashboard").append('</a></div>')
-
 }
+
+
 
 function stylePercentage(percentage) {
   if (percentage == null) {
