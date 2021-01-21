@@ -1,5 +1,6 @@
 let topCoins;
 let topCoinAmount = 100;
+let currency = "$"
 let bgColor = getComputedStyle(document.documentElement).getPropertyValue('--bgColor');
 let greenColor = getComputedStyle(document.documentElement).getPropertyValue('--green');
 let redColor = getComputedStyle(document.documentElement).getPropertyValue('--red');
@@ -28,7 +29,7 @@ function addCoinToDashboard(coin) {
   newCanvas.id = coin["id"];
 
 
-  $(".dashboard").append( '   <div class="coin"> <img src='+ coin["image"] +'> <a> #' + coin["market_cap_rank"] + ' ' +  coin["name"]   + '</a>      <a> $' + (coin["current_price"]).toLocaleString('en') + '</a> ' + changePercentage1h + '</a>' + '</a>' + changePercentage24h + '</a>' + changePercentage7d+ '</a><a> <canvas id="'+coin["id"]+'"></canvas>');
+  $(".dashboard").append( '<div class="coin"> <img src='+ coin["image"] +'> <a> #' + coin["market_cap_rank"] + ' ' +  coin["name"]   + '</a> <a> '+currency + coin["current_price"].toLocaleString('en') + '</a> ' + changePercentage1h +  changePercentage24h + changePercentage7d + '<a>' +currency + coin["total_volume"].toLocaleString('en') + '</a><a> <canvas id="'+coin["id"]+'"></canvas>');
 
   if (coin["sparkline_in_7d"]["price"][0] < coin["sparkline_in_7d"]["price"][coin["sparkline_in_7d"]["price"].length-1]) {
     var chart = new Graph({ data: coin["sparkline_in_7d"]["price"], target: document.getElementById(coin["id"]), lineWidth: 1, lineColor: greenColor, background: infoColor })
