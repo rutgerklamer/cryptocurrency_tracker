@@ -3,9 +3,17 @@
   --green: #02C08C;
   --bgColor: #121111;
   --infoColor: #191B20;
+  --infoColorSelect: #272B32;
+  --textColor: white;
 }
 
 body {
+  background-color: var(--bgColor);
+}
+
+.settings {
+  width: 80%;
+  margin-left: 10%;
   background-color: var(--bgColor);
 }
 
@@ -18,25 +26,35 @@ body {
 .coin {
   display: flex;
   flex-wrap: nowrap;
-  background-color: #var(--infoColor);
+  background-color: var(--infoColor);
+  text-align: left;
+}
 
+.coin:hover {
+  background-color: var(--infoColorSelect);
+}
+
+a:hover {
+  cursor: pointer;
 }
 
 a {
-  background-color: var(--infoColor);
   width: 100%;
-  text-align: left;
+  text-align: inherit;
   line-height: 48px;
   height: 48px;
   font-size: 20px;
-  color:white;
+  color:var(--textColor);
+  border: solid var(--bgColor);
+  border-width: 3px 0 3px 0px;
 }
 
 
 img {
   height: 48px;
   width: 48px;
-  margin-top: 5px;
+  border: solid var(--bgColor);
+  border-width: 3px 0 3px 0px;
 }
 
 canvas {
@@ -45,7 +63,7 @@ canvas {
 }
 
 .arrow {
-  border: solid white;
+  border: solid var(--textColor);
   border-width: 0 3px 3px 0;
   display: inline-block;
   padding: 3px;
