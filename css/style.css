@@ -13,6 +13,7 @@ body {
 }
 
 .settings {
+  border: 5px solid var(--textColor);
   width: 80%;
   margin-left: 10%;
   position: -webkit-sticky; /* Safari */
@@ -21,6 +22,7 @@ body {
 }
 
 .settingsItem {
+  border: 5px solid var(--textColor);
  height: 48px;
  flex: 0 0 90%;
 }
@@ -93,8 +95,10 @@ canvas {
 }
 
 .full  {
-  width: 480px;
-  height: 360px;
+  border: solid var(--textColor);
+  border-width: 3px;;
+  width: 65%;
+  height: 35%;
 }
 
 .arrow-small  {

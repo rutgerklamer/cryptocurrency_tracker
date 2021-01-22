@@ -1,10 +1,10 @@
 let darkMode = true;
-let greenColor = '#02C08C';
-let redColor = '#FF0346';
-let bgColor = '#121111';
-let infoColor = '#191B20';
-let infoColorSelect = '#272B32';
-let textColor = 'white';
+let greenColor = getComputedStyle(document.documentElement).getPropertyValue('--green');
+let redColor = getComputedStyle(document.documentElement).getPropertyValue('--red');
+let bgColor = getComputedStyle(document.documentElement).getPropertyValue('--bgColor');
+let infoColor = getComputedStyle(document.documentElement).getPropertyValue('--infoColor');
+let infoColorSelect = getComputedStyle(document.documentElement).getPropertyValue('--infoColorSelect');
+let textColor = getComputedStyle(document.documentElement).getPropertyValue('--textColor');
 
 function changeColorMode() {
   console.log("hello");
@@ -31,5 +31,20 @@ function changeColorMode() {
   r.style.setProperty('--infoColor', infoColor);
   r.style.setProperty('--infoColorSelect', infoColorSelect);
   r.style.setProperty('--textColor', textColor);
+
+  if (bigChart) {
+        let changeItemColor = (item) => {
+            item.scaleLabel.fontColor = textColor;
+            item.ticks.fontColor = textColor;
+            item.ticks.minor.fontColor = textColor;
+            item.ticks.major.fontColor = textColor;
+        };
+        bigChart.options.scales.xAxes.forEach((item) => changeItemColor(item));
+        bigChart.options.scales.yAxes.forEach((item) => changeItemColor(item));
+        var dataset = bigChart.data.datasets[0];
+        dataset.borderColor = textColor;
+        dataset.fontColor = textColor;
+        bigChart.update();
+  }
 
 }
