@@ -11,7 +11,14 @@
     <body>
 
       <div class="settings">
-           <div class="options">  <a class="settingsItem" onclick="changeColorMode(false)" >Change darkmode</a> <a onclick="changePage(false)" class="prev"><i class="arrow left"></i></a><a onclick="changePage(true)" class="next"><i class="arrow right"></i></a></div>
+           <div class="options"><a class="settingsItem dropdown" >Change currency
+  <div class="dropdown-content">
+  <p onclick="changeCurrency('$')">USD $</p>
+  <p onclick="changeCurrency('€')">EUR €</p>
+  <p onclick="changeCurrency('£')">Pound £</p>
+  </div>
+    <a class="settingsItem" onclick="changeColorMode(false)" >Change darkmode</a>
+</a> <a onclick="changePage(false)" class="prev"><i class="arrow left"></i></a><a onclick="changePage(true)" class="next"><i class="arrow right"></i></a></div>
       </div>
       <div class="dashboard">
            <div class="coin">     <a class="name" onclick="sortByRank(false)" style="padding-left: 48px">Coin <i class="arrow-small up"></i></a><a  onclick="sortByPrice(false)">Price per coin</a>  <a  onclick="sortByPriceChange1h(false)">Change 1 hrs</a> <a  onclick="sortByPriceChange24h(false)">Change 24 hrs</a> <a onclick="sortByPriceChange7d(false)">Change 7 days</a> <a onclick="sortByTotalVolume(false)">Total volume</a> <a onclick="sortByPriceChange7d(false)">7 day graph</a></div>

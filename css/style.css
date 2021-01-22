@@ -4,7 +4,7 @@
   --bgColor: #121111;
   --infoColor: #191B20;
   --infoColorSelect: #272B32;
-  --textColor: white;
+  --textColor: #F6F5F2;
 }
 
 body {
@@ -24,7 +24,7 @@ body {
 .settingsItem {
   border: 5px solid var(--textColor);
  height: 48px;
- flex: 0 0 90%;
+ flex: 0 0 45%;
 }
 
 .settingsItem:hover {
@@ -149,4 +149,26 @@ canvas {
 .down {
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: var(--infoColor);
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); 
+  z-index: 1;
+}
+
+p:hover {
+  background-color: var(--infoColorSelect);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
 }

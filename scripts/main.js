@@ -1,13 +1,12 @@
 let topCoins;
 let currentCoin;
 let topCoinAmount = 100;
-let currency = "$"
+let currency = ["$", "usd"]
 let pageCount = 1;
 let bigChart;
 const geckoApiLink = "https://api.coingecko.com/api/v3";
 
 $( document ).ready(function() {
-  changeColorMode();
     topCoins = JSON.parse(httpGet(geckoApiLink+getTopCoins(topCoinAmount,pageCount)));
     for (i = 0; i < topCoinAmount; i++) {
       addCoinToDashboard(topCoins[i]);
@@ -35,8 +34,8 @@ function changePage(nextPage) {
 }
 
 
-function getTopCoins(amount) {
-  return "/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=" + amount + "&page="+pageCount+"&sparkline=true&price_change_percentage=1h,24h,7d&";
+function getTopCoins(amount, curr) {
+  return "/coins/markets?vs_currency="+currency[1]+"&order=market_cap_desc&per_page=" + amount + "&page="+pageCount+"&sparkline=true&price_change_percentage=1h,24h,7d&";
 }
 
 function getCoinInfo(coin) {
@@ -51,7 +50,7 @@ function addCoinToDashboard(coin) {
   let newCanvas = document.createElement('CANVAS');
   newCanvas.id = coin["id"];
 
-  $(".dashboard").append( '<div class="coin" onclick="showCoin(&quot;'+coin["id"]+'&quot;, this)"> <img src='+ coin["image"] +'> <a class="name"> #' + coin["market_cap_rank"] + ' ' +  coin["name"]   + '</a> <a> '+currency + coin["current_price"].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') + '</a> ' + changePercentage1h +  changePercentage24h + changePercentage7d + '<a>' +currency + coin["total_volume"].toLocaleString('en') + '</a><a> <canvas width="100%"height="100%"id="'+coin["id"]+'"></canvas></a>');
+  $(".dashboard").append( '<div class="coin" onclick="showCoin(&quot;'+coin["id"]+'&quot;, this)"> <img src='+ coin["image"] +'> <a class="name"> #' + coin["market_cap_rank"] + ' ' +  coin["name"]   + '</a> <a> '+currency[0] + coin["current_price"].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') + '</a> ' + changePercentage1h +  changePercentage24h + changePercentage7d + '<a>' +currency[0] + coin["total_volume"].toLocaleString('en') + '</a><a> <canvas width="100%"height="100%"id="'+coin["id"]+'"></canvas></a>');
 
   if (coin["sparkline_in_7d"]["price"][0] < coin["sparkline_in_7d"]["price"][coin["sparkline_in_7d"]["price"].length-1]) {
     var chart = new Graph({ data: coin["sparkline_in_7d"]["price"], target: document.getElementById(coin["id"]), lineWidth: 1, lineColor: greenColor, background: 'transparent' })
@@ -110,15 +109,23 @@ bigChart = new Chart(ctx, {
         pointRadius: 0,
         pointHitRadius: 10,
         fill: false,
-        backgroundColor: 'red',
+        backgroundColor: textColor,
         showLine: true
       }
     ]
   },
-  options: {
+    options: {
+    tooltips: {
+      mode: 'index',
+      intersect: false
+   },
+   hover: {
+      mode: 'index',
+      intersect: false
+   },
     title: {
       display: true,
-      text: coinId + ' price in ' + currency
+      text: coinId + ' price in ' + currency[0]
     }, legend: {
             display: false,
           },
@@ -128,6 +135,7 @@ bigChart = new Chart(ctx, {
         ticks: {
             maxTicksLimit: 14.285,
             fontColor: textColor,
+            gridLines: { color: infoColorSelect },
             minor: { fontColor: textColor },
             major: { fontColor: textColor }
         },
@@ -137,6 +145,7 @@ bigChart = new Chart(ctx, {
         ticks: {
             maxTicksLimit: 14.285,
             fontColor: textColor,
+            gridLines: { color: infoColorSelect },
             minor: { fontColor: textColor },
             major: { fontColor: textColor }
         },
