@@ -26,7 +26,10 @@ class Graph {
         };
 
         if (options) {
-            this.options = { ...this.options, ...options};
+            this.options = {
+                ...this.options,
+                ...options
+            };
         }
 
         if (typeof this.options.data !== 'object' && !Array.isArray(this.options.data)) {
@@ -114,7 +117,7 @@ class Graph {
         this.minValue = Math.abs(Math.min(...this.options.data));
 
         if (this.minValue != this.maxValue && this.options.showZeroLine) {
-            if(this.maxValue > this.minValue) {
+            if (this.maxValue > this.minValue) {
                 this.minValue = 0;
             } else {
                 this.maxValue = 0;
@@ -177,7 +180,7 @@ class Graph {
         this.options.context.beginPath();
 
         for (let i = 0; i <= dataLength; i++) {
-                this.options.context.lineTo.apply(this.options.context, this.getPointCoordinates(i));
+            this.options.context.lineTo.apply(this.options.context, this.getPointCoordinates(i));
         }
 
         this.options.context.stroke();
@@ -224,7 +227,7 @@ class Graph {
      * Draw graph legend
      */
     async drawLegend() {
-        const dataLength = this.options.data.length -1;
+        const dataLength = this.options.data.length - 1;
 
         if (!this.options.showLegend || !this.options.legend) {
             return;

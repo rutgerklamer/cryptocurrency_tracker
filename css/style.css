@@ -95,11 +95,33 @@ canvas {
   height: 100%;
 }
 
-.full  {
+.coinWrapper {
+  width: 100%;
+  max-height: 50%;
+}
+
+.sideInfo {
+  line-height: 3vw;
+  height:496px;
+  width: 34%;
+  height: 38vw;
+  padding-bottom: 5px;
   border: solid var(--textColor);
-  border-width: 3px;;
-  width: 65%;
+  border-width: 3px 3px 3px 0;
+  background-image: repeating-linear-gradient(180deg, var(--textColor), var(--textColor) 2px, var(--infoColor) 2px, var(--infoColor) 3vw);
+  color: var(--textColor);
+  overflow: hidden  ;
+  font-size: 2vw;
+}
+
+.full  {
+  flex:1;
+  border: solid var(--textColor);
+  border-width: 3px;
+  width: 64%;
   height: 35%;
+  color: var(--textColor);
+  float: left;
 }
 
 .arrow-small  {

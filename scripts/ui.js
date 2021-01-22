@@ -7,49 +7,49 @@ let infoColorSelect = getComputedStyle(document.documentElement).getPropertyValu
 let textColor = getComputedStyle(document.documentElement).getPropertyValue('--textColor');
 
 function changeCurrency(cur) {
-  currency[0] = cur;
-  if (currency[0] == "$") {
-    currency[1] = "usd";
-  } else if (currency[0] == "€") {
-    currency[1] = "eur";
-  }else if (currency[0] == "£") {
-    currency[1] = "gbp";
-  }
+    currency[0] = cur;
+    if (currency[0] == "$") {
+        currency[1] = "usd";
+    } else if (currency[0] == "€") {
+        currency[1] = "eur";
+    } else if (currency[0] == "£") {
+        currency[1] = "gbp";
+    }
 
-  $(".dashboard").empty();
-  $(".dashboard").append('<div class="coin">     <a  class="name" onclick="sortByRank(true)" style="margin-left: 48px">Coin </a>      <a  onclick="sortByPrice(false)">Price per coin</a> <a  onclick="sortByPriceChange1h(false)">Change 1 hrs</a>  <a onclick="sortByPriceChange24h(false)">Change 24 hrs</a><a onclick="sortByPriceChange7d(false)">Change 7 days</a><a onclick="sortByTotalVolume(false)">Total volume</a><a onclick="sortByPriceChange7d(false)">7 day graph</a></div>');
-  topCoins = JSON.parse(httpGet(geckoApiLink+getTopCoins(topCoinAmount,pageCount)));
-  for (i = 0; i < topCoinAmount; i++) {
-    addCoinToDashboard(topCoins[i]);
-  }
+    $(".dashboard").empty();
+    $(".dashboard").append('<div class="coin">     <a  class="name" onclick="sortByRank(true)" style="margin-left: 48px">Coin </a>      <a  onclick="sortByPrice(false)">Price per coin</a> <a  onclick="sortByPriceChange1h(false)">Change 1 hrs</a>  <a onclick="sortByPriceChange24h(false)">Change 24 hrs</a><a onclick="sortByPriceChange7d(false)">Change 7 days</a><a onclick="sortByTotalVolume(false)">Total volume</a><a onclick="sortByPriceChange7d(false)">7 day graph</a></div>');
+    topCoins = JSON.parse(httpGet(geckoApiLink + getTopCoins(topCoinAmount, pageCount)));
+    for (i = 0; i < topCoinAmount; i++) {
+        addCoinToDashboard(topCoins[i]);
+    }
 }
 
 function changeColorMode() {
-  darkMode = !darkMode;
-  if (darkMode) {
-     greenColor = '#02C08C';
-     redColor = '#FF0346';
-     bgColor = '#121111';
-     infoColor = '#191B20';
-     infoColorSelect = '#272B32';
-     textColor = '#F6F5F2';
-  } else {
-    greenColor = 'green';
-    redColor = 'red';
-    bgColor = '#F6F5F2';
-    infoColor = '#F6F5F2';
-    infoColorSelect = '#F0F1F5';
-    textColor = '#3D3D3D';
-  }
-  let r = document.querySelector(':root');
-  r.style.setProperty('--green', greenColor);
-  r.style.setProperty('--red', redColor);
-  r.style.setProperty('--bgColor', bgColor);
-  r.style.setProperty('--infoColor', infoColor);
-  r.style.setProperty('--infoColorSelect', infoColorSelect);
-  r.style.setProperty('--textColor', textColor);
+    darkMode = !darkMode;
+    if (darkMode) {
+        greenColor = '#02C08C';
+        redColor = '#FF0346';
+        bgColor = '#121111';
+        infoColor = '#191B20';
+        infoColorSelect = '#272B32';
+        textColor = '#F6F5F2';
+    } else {
+        greenColor = 'green';
+        redColor = 'red';
+        bgColor = '#F6F5F2';
+        infoColor = '#F6F5F2';
+        infoColorSelect = '#F0F1F5';
+        textColor = '#3D3D3D';
+    }
+    let r = document.querySelector(':root');
+    r.style.setProperty('--green', greenColor);
+    r.style.setProperty('--red', redColor);
+    r.style.setProperty('--bgColor', bgColor);
+    r.style.setProperty('--infoColor', infoColor);
+    r.style.setProperty('--infoColorSelect', infoColorSelect);
+    r.style.setProperty('--textColor', textColor);
 
-  if (bigChart) {
+    if (bigChart) {
         let changeItemColor = (item) => {
             item.scaleLabel.fontColor = textColor;
             item.ticks.fontColor = textColor;
@@ -64,6 +64,6 @@ function changeColorMode() {
         dataset.backgroundColor = textColor;
         dataset.fontColor = textColor;
         bigChart.update();
-  }
+    }
 
 }
