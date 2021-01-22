@@ -4,9 +4,12 @@ let topCoinAmount = 100;
 let currency = ["$", "usd"]
 let pageCount = 1;
 let bigChart;
+let exchangeRate = 1.0;
+
 const geckoApiLink = "https://api.coingecko.com/api/v3";
 
 $( document ).ready(function() {
+
     topCoins = JSON.parse(httpGet(geckoApiLink+getTopCoins(topCoinAmount,pageCount)));
     for (i = 0; i < topCoinAmount; i++) {
       addCoinToDashboard(topCoins[i]);
@@ -39,7 +42,7 @@ function getTopCoins(amount, curr) {
 }
 
 function getCoinInfo(coin) {
-  return "/coins/"+ coin + "?sparkline=true" ;
+  return "/coins/"+ coin + "?vs_currency="+currency[1]+"&sparkline=true" ;
 }
 
 function addCoinToDashboard(coin) {
@@ -50,7 +53,7 @@ function addCoinToDashboard(coin) {
   let newCanvas = document.createElement('CANVAS');
   newCanvas.id = coin["id"];
 
-  $(".dashboard").append( '<div class="coin" onclick="showCoin(&quot;'+coin["id"]+'&quot;, this)"> <img src='+ coin["image"] +'> <a class="name"> #' + coin["market_cap_rank"] + ' ' +  coin["name"]   + '</a> <a> '+currency[0] + coin["current_price"].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') + '</a> ' + changePercentage1h +  changePercentage24h + changePercentage7d + '<a>' +currency[0] + coin["total_volume"].toLocaleString('en') + '</a><a> <canvas width="100%"height="100%"id="'+coin["id"]+'"></canvas></a>');
+  $(".dashboard").append( '<div class="coin" onclick="showCoin(&quot;'+coin["id"]+'&quot;,&quot;'+coin["market_cap_rank"]+'&quot;, this)"> <img src='+ coin["image"] +'> <a class="name"> #' + coin["market_cap_rank"] + ' ' +  coin["name"]   + '</a> <a> '+currency[0] + coin["current_price"].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') + '</a> ' + changePercentage1h +  changePercentage24h + changePercentage7d + '<a>' +currency[0] + coin["total_volume"].toLocaleString('en') + '</a><a> <canvas width="100%"height="100%"id="'+coin["id"]+'"></canvas></a>');
 
   if (coin["sparkline_in_7d"]["price"][0] < coin["sparkline_in_7d"]["price"][coin["sparkline_in_7d"]["price"].length-1]) {
     var chart = new Graph({ data: coin["sparkline_in_7d"]["price"], target: document.getElementById(coin["id"]), lineWidth: 1, lineColor: greenColor, background: 'transparent' })
@@ -61,21 +64,23 @@ function addCoinToDashboard(coin) {
   $(".dashboard").append('</a></div>')
 }
 
-function showCoin(coinId, e) {
+function showCoin(coinId, coinRank, e) {
   let coinInfo = JSON.parse(httpGet(geckoApiLink+getCoinInfo(coinId)))
+  console.log(coinInfo)
+
 
   $(".dashboard").empty();
   $(".dashboard").append('<div class="coin">     <a  class="name" onclick="sortByRank(true)" style="margin-left: 48px">Go back </a>      </div>');
   let newCanvas = document.createElement('CANVAS');
   newCanvas.id = coinInfo["id"];
   $(".dashboard").append('<div class="full"> <canvas id="'+coinInfo["id"]+'"></canvas></div>');
+  exchangeRate = parseFloat(coinInfo["market_data"]["current_price"]["usd"]) / parseFloat(coinInfo["market_data"]["current_price"][currency[1]]);
   drawChart(coinInfo["id"], coinInfo["market_data"]["sparkline_7d"]["price"]);
-  //var chart = new Graph({ data: coinInfo["market_data"]["sparkline_7d"]["price"], target: document.getElementById(coinInfo["id"]), lineWidth: 4, lineColor: greenColor, background: 'transparent' });
 }
 
 function fixSparklineDecimals(arr) {
   for (i = 0; i < arr.length; i++) {
-    arr[i] = parseFloat(arr[i].toString().slice(0, -arr[i].toString().length + 10).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',').replace(/,/g, ''));
+    arr[i] = parseFloat(arr[i].toString().slice(0, -arr[i].toString().length + 10).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',').replace(/,/g, ''))/parseFloat(exchangeRate);
   }
   return arr;
 }
@@ -132,20 +137,20 @@ bigChart = new Chart(ctx, {
         scales: {
     xAxes: [{
         scaleLabel: {fontColor: textColor},
+        gridLines: { color: infoColorSelect },
         ticks: {
             maxTicksLimit: 14.285,
             fontColor: textColor,
-            gridLines: { color: infoColorSelect },
             minor: { fontColor: textColor },
             major: { fontColor: textColor }
         },
     }],
     yAxes: [{
         scaleLabel: {fontColor: textColor},
+        gridLines: { color: infoColorSelect },
         ticks: {
             maxTicksLimit: 14.285,
             fontColor: textColor,
-            gridLines: { color: infoColorSelect },
             minor: { fontColor: textColor },
             major: { fontColor: textColor }
         },
