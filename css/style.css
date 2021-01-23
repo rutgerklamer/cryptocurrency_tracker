@@ -4,10 +4,11 @@
   --bgColor: #121111;
   --infoColor: #191B20;
   --infoColorSelect: #272B32;
-  --textColor: #F6F5F2;
+  --textColor: #FFFFC0;
 }
 
 body {
+  font-family: Arial, Helvetica, sans-serif;
   background-color: var(--bgColor);
   height: 100%;
   width: 100%;
@@ -103,19 +104,40 @@ canvas {
 .coinDescription {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
-  line-height: 3vw;
+  line-height: 1.7vw;
   width: 64%;
-  height: 20vw;
+  height: 21vw;
   border: solid var(--textColor);
   border-width: 3px 3px 3px 3px;
   overflow: scroll;
-  font-size: 2vw;
+  font-size: 1.5vw;
   color: var(--textColor);
   display:inline-block;
 }
 
+.likePercentageBarGreen {
+  font-size: 20px;
+  color:var(--textColor);
+  background-color: var(--green);
+  height: 2vw;
+  width: 75%;
+  font-size: 1.7vw;
+  float: left; white-space: nowrap;
+}
+
+
+.likePercentageBarRed {
+  background-color: var(--red);
+  height: 2vw;
+  width: 99.7%;
+}
+
 .coinDescription.small {
-  width: 34%;
+  width: 34.8%;
+  font-size: 1.7vw;
+  line-height: 3vw;
+  background-image: repeating-linear-gradient(180deg, var(--textColor), var(--textColor) 2px, var(--infoColor) 2px, var(--infoColor) 3vw);
+  color: var(--textColor);
 }
 
 
@@ -129,11 +151,22 @@ canvas {
 }
 
 a:link {
+  text-decoration: none;
   color: var(--textColor);
 }
 
+a:link:hover {
+  text-decoration: none;
+  color: var(--red);
+}
+
 a:visited {
+  text-decoration: none;
   color: var(--textColor);
+}
+a:visited:hover {
+  text-decoration: none;
+  color: var(--red);
 }
 
 .coinWrapper {
@@ -144,15 +177,15 @@ a:visited {
 .sideInfo {
   line-height: 3vw;
   height:496px;
-  width: 34%;
+  width: 35%;
   height: 37.6vw;
   padding-bottom: 5px;
   border: solid var(--textColor);
   border-width: 3px 3px 3px 0;
   background-image: repeating-linear-gradient(180deg, var(--textColor), var(--textColor) 2px, var(--infoColor) 2px, var(--infoColor) 3vw);
   color: var(--textColor);
-  overflow: hidden  ;
-  font-size: 2vw;
+  overflow: hidden;
+  font-size: 1.7vw;
 }
 
 .full  {

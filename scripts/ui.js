@@ -32,10 +32,10 @@ function changeColorMode() {
         bgColor = '#121111';
         infoColor = '#191B20';
         infoColorSelect = '#272B32';
-        textColor = '#F6F5F2';
+        textColor = '#FFFFC0';
     } else {
-        greenColor = 'green';
-        redColor = 'red';
+        greenColor = '#02C08C';
+        redColor = '#FF0346';
         bgColor = '#F6F5F2';
         infoColor = '#F6F5F2';
         infoColorSelect = '#F0F1F5';
