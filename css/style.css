@@ -25,7 +25,7 @@ body {
 .settingsItem {
   border: 5px solid var(--textColor);
  height: 48px;
- flex: 0 0 45%;
+ flex: 0 0 30%;
 }
 
 .settingsItem:hover {
@@ -95,6 +95,41 @@ canvas {
   height: 100%;
 }
 
+.coinTextWrapper {
+  width: 100%;
+  max-height: 50%;
+}
+
+
+.coinDescription {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  line-height: 3vw;
+  width: 64%;
+  height: 20vw;
+  border: solid var(--textColor);
+  border-width: 3px 3px 3px 3px;
+  overflow: scroll;
+  font-size: 2vw;
+}
+
+.coinDescription::-webkit-scrollbar {
+  display: none;
+}
+
+.coinDescription .bg {
+  background-image: repeating-linear-gradient(180deg, var(--textColor), var(--textColor) 2px, var(--infoColor) 2px, var(--infoColor) 3vw);
+  color: var(--textColor);
+}
+
+a:link {
+  color: var(--textColor);
+}
+
+a:visited {
+  color: var(--textColor);
+}
+
 .coinWrapper {
   width: 100%;
   max-height: 50%;
@@ -104,7 +139,7 @@ canvas {
   line-height: 3vw;
   height:496px;
   width: 34%;
-  height: 38vw;
+  height: 37.6vw;
   padding-bottom: 5px;
   border: solid var(--textColor);
   border-width: 3px 3px 3px 0;
@@ -187,6 +222,19 @@ canvas {
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
+
+.searchContent {
+  display: block;
+  position: absolute;
+  background-color: var(--infoColor);
+  width: 30%;
+  margin-top: 48px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+
+
 
 p:hover {
   background-color: var(--infoColorSelect);

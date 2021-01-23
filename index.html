@@ -7,6 +7,8 @@
         <link rel="stylesheet" type="text/css" href="./css/style.css" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+
     </head>
     <body>
 
@@ -18,6 +20,15 @@
   <p onclick="changeCurrency('£')">Pound £</p>
   </div>
     <a class="settingsItem" onclick="changeColorMode(false)" >Change darkmode</a>
+    <a class="settingsItem" >
+      <div class="searchContent">
+        <p id="item0" class="searchItem" data-coinId="0" onclick="goToCoin(this)"></p>
+        <p id="item1" class="searchItem" data-coinId="0" onclick="goToCoin(this)"></p>
+        <p id="item2" class="searchItem" data-coinId="0" onclick="goToCoin(this)"></p>
+      </div>
+    <label for="fname">Search currency:</label>
+    <input type="text" id="coinSearch" name="coinSearch"></a>
+
 </a> <a onclick="changePage(false)" class="prev"><i class="arrow left"></i></a><a onclick="changePage(true)" class="next"><i class="arrow right"></i></a></div>
       </div>
       <div class="dashboard">
