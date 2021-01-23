@@ -100,7 +100,6 @@ canvas {
   max-height: 50%;
 }
 
-
 .coinDescription {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
@@ -111,7 +110,14 @@ canvas {
   border-width: 3px 3px 3px 3px;
   overflow: scroll;
   font-size: 2vw;
+  color: var(--textColor);
+  display:inline-block;
 }
+
+.coinDescription.small {
+  width: 34%;
+}
+
 
 .coinDescription::-webkit-scrollbar {
   display: none;
@@ -227,7 +233,7 @@ a:visited {
   display: block;
   position: absolute;
   background-color: var(--infoColor);
-  width: 30%;
+  width: 0;
   margin-top: 48px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
