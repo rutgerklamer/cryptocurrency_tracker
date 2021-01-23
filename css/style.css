@@ -56,9 +56,6 @@ body {
   background-color: var(--infoColorSelect);
 }
 
-a:hover {
-  cursor: pointer;
-}
 .name {
   flex: 0 0 20%;
 
@@ -69,11 +66,17 @@ a:hover {
   text-align: inherit;
   line-height: 48px;
   height: 48px;
-  font-size: 20px;
+  font-size: 16px;
   color:var(--textColor);
   border: solid var(--bgColor);
   border-width: 3px 0 3px 0px;
 }
+
+.coin a:hover,.settings a:hover {
+  cursor: pointer;
+}
+
+
 
 
 img {
