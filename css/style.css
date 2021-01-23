@@ -16,7 +16,7 @@ body {
 
 .settings {
   border: 5px solid var(--textColor);
-  width: 80%;
+  width: 78.3vw;
   margin-left: 10%;
   position: -webkit-sticky; /* Safari */
   position: sticky;

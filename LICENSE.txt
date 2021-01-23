@@ -1,5 +1,3 @@
-# Cryptocurrency tracker
-Tracking cryptocurrencies using the [Coingecko API](https://www.coingecko.com/api/documentations/v3). Currently in the early development stages, but you can expect lots of support for this project. Click for a [DEMO](https://rutgerklamer.nl/coin_tracker/). Want to run this project locally? Just clone the repository and open index.html. This project is distributed under the MIT license.
 
 The MIT License (MIT)
 =====================
