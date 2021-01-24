@@ -41,15 +41,15 @@ $(document).ready(function() {
       }
 
       if (foundCoins[3]) {
-        $("#item3").text(allCoins[foundCoins[2]]["name"]);
-        document.getElementById("item3").dataset.coinId = allCoins[foundCoins[2]]["id"];
+        $("#item3").text(allCoins[foundCoins[3]]["name"]);
+        document.getElementById("item3").dataset.coinId = allCoins[foundCoins[3]]["id"];
       } else {
           $("#item3").text("");
       }
 
       if (foundCoins[4]) {
-        $("#item4").text(allCoins[foundCoins[2]]["name"]);
-        document.getElementById("item4").dataset.coinId = allCoins[foundCoins[2]]["id"];
+        $("#item4").text(allCoins[foundCoins[4]]["name"]);
+        document.getElementById("item4").dataset.coinId = allCoins[foundCoins[4]]["id"];
       } else {
           $("#item4").text("");
       }
@@ -296,6 +296,7 @@ function drawChart(coinId, sparkline) {
             }],
         },
         options: {
+          responsive: true,
             tooltips: {
                 mode: 'index',
                 intersect: false,
