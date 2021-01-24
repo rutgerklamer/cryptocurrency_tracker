@@ -215,8 +215,9 @@ function changeGraph(coinId, length) {
   for (i = 0; i < coinMarketInfo["prices"].length; i++) {
     sparkline.push(coinMarketInfo["prices"][i][1]);
   }
+  console.log(sparkline)
   bigChart.destroy();
-  drawChart(coinId.id, sparkline);
+  drawChart(coinId.id, sparkline, length);
 }
 
 function showCoin(coinId) {
@@ -225,7 +226,7 @@ function showCoin(coinId) {
 
 
     $(".dashboard").empty();
-    $(".dashboard").append('<div class="coin">     <a  class="name" onclick="sortByRank(true)" style="margin-left: 48px">Go back </a><a  class="name" onclick="changeGraph('+coinInfo["id"]+',24)">Get 24h graph </a><a  class="name" onclick="changeGraph('+coinInfo["id"]+',168)">Get 7 day graph </a>       </div>');
+    $(".dashboard").append('<div class="coin">     <a  class="name" onclick="sortByRank(true)" style="margin-left: 48px">Go back </a><a  class="name" onclick="changeGraph('+coinInfo["id"]+',24)">Get 24h graph </a><a  class="name" onclick="changeGraph('+coinInfo["id"]+',168)">Get 7 day graph </a><a  class="name" onclick="changeGraph('+coinInfo["id"]+',720)">Get 30 day graph </a>       </div>');
     let newCanvas = document.createElement('CANVAS');
     newCanvas.id = coinInfo["id"];
     $(".dashboard").append('<div class="coinWrapper"><div class="full"> <canvas id="' + coinInfo["id"] + '"></canvas></div><div class="sideInfo"><a id="currentPrice">Current price of '+coinInfo["symbol"] + ': ' + currency[0] + coinInfo["market_data"]["current_price"][currency[1]].toLocaleString('en') + '</a><br><a>Highest last 24 hr: ' + currency[0] + coinInfo["market_data"]["high_24h"][currency[1]].toLocaleString('en') + '</a><br><a>Lowest last 24 hr: ' + currency[0] + coinInfo["market_data"]["low_24h"][currency[1]].toLocaleString('en') + '</a><br><a>Difference between: ' + currency[0] + (parseFloat(coinInfo["market_data"]["high_24h"][currency[1]]-coinInfo["market_data"]["low_24h"][currency[1]])).toLocaleString('en') + '</a><br><a>Market cap: '+ currency[0] + coinInfo["market_data"]["market_cap"][currency[1]].toLocaleString('en') + '</a><br><a>Volume: '+ currency[0] + coinInfo["market_data"]["total_volume"][currency[1]].toLocaleString('en') + '</a><br><a>Price change 1h: <a style="color:'+((coinInfo["market_data"]["price_change_percentage_1h_in_currency"][currency[1]] > 0) ? 'var(--green)' : 'var(--red)')+';">' + coinInfo["market_data"]["price_change_percentage_1h_in_currency"][currency[1]] + '</a>%</a><br><a>Price change 24h: <a style="color:'+((coinInfo["market_data"]["price_change_percentage_24h_in_currency"][currency[1]] > 0) ? 'var(--green)' : 'var(--red)')+';">' + coinInfo["market_data"]["price_change_percentage_24h_in_currency"][currency[1]] + '</a>%</a><br><a>Price change 7d: <a style="color:'+((coinInfo["market_data"]["price_change_percentage_7d_in_currency"][currency[1]] > 0) ? 'var(--green)' : 'var(--red)')+';">' + coinInfo["market_data"]["price_change_percentage_7d_in_currency"][currency[1]] + '</a>%</a><br><a>Market cap rank: #' + coinInfo["market_data"]["market_cap_rank"] + '</a><br><a>All time high: ' + currency[0] + coinInfo["market_data"]["ath"][currency[1]].toLocaleString('en') + '</a><br><a>All time high change: <a style="color:' + ((coinInfo["market_data"]["ath_change_percentage"][currency[1]] > 0) ? 'var(--green)' : 'var(--red)') +'">' + coinInfo["market_data"]["ath_change_percentage"][currency[1]].toLocaleString('en') + '</a>%</a></div></div><div class="coinDescription"><div ><a style="color:var(--red)">Coin info: </a>'+coinInfo["description"]['en']+'</div></div><div class="coinDescription small"><div><a style="color:var(--red)">Coin media:<br> </a><a href="'+coinInfo["links"]['homepage'][0]+'">Website</a><br><a href="'+coinInfo["links"]['blockchain_site'][0]+'">Blockchain scan site</a><br><a href="https://twitter.com/'+coinInfo["links"]['twitter_screen_name']+'">Twitter</a><br><a href="https://facebook.com/'+coinInfo["links"]['facebook_username']+'">Facebook</a><br>'+(coinInfo["links"]['subreddit_url'] ? "<a href=" + coinInfo["links"]['subreddit_url']+">Reddit</a><br>" : "")+(coinInfo["links"]['official_forum_url'][0] ? "<a href=" + coinInfo["links"]['official_forum_url'][0] +">Forum</a><br>" : "")+'</div></div><div class="likePercentageBarRed"><div class="likePercentageBarGreen" style="width:'+(100-coinInfo["sentiment_votes_down_percentage"])+'%"><a>Coingecko community likes today</a></div></div>');
@@ -235,7 +236,7 @@ function showCoin(coinId) {
     let sparkline = coinInfo["market_data"]["sparkline_7d"]["price"].map(i => parseFloat(i));
 
 
-    drawChart(coinInfo["id"], sparkline);
+    drawChart(coinInfo["id"], sparkline, 168);
 }
 
 function normalizeArray(arr, min, max, a, b) {
@@ -300,11 +301,12 @@ function fixSparklineDecimals(arr) {
     return arr;
 }
 
-function getSparklineLabels(arr) {
+function getSparklineLabels(arr, hours) {
     let labels = new Array();
     for (i = 0; i < arr.length; i++) {
         var date = new Date();
-        date.setHours(date.getHours() - arr.length + i);
+        console.log(i + " - " + hours + " - " + parseFloat(i/hours))
+        date.setHours(date.getHours() - hours + parseFloat(i));
         const options = {
             weekday: 'long',
             year: 'numeric',
@@ -318,7 +320,7 @@ function getSparklineLabels(arr) {
     return labels;
 }
 
-function drawChart(coinId, sparkline) {
+function drawChart(coinId, sparkline, hours) {
 
     var ctx = document.getElementById(coinId).getContext('2d');
 
@@ -327,7 +329,7 @@ function drawChart(coinId, sparkline) {
     bigChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: getSparklineLabels(sparkline),
+            labels: getSparklineLabels(sparkline, hours),
             datasets: [{
                 data: fixSparklineDecimals(sparkline),
                 label: coinId,
