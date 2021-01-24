@@ -59,10 +59,13 @@ function changeColorMode() {
         };
         bigChart.options.scales.xAxes.forEach((item) => changeItemColor(item));
         bigChart.options.scales.yAxes.forEach((item) => changeItemColor(item));
-        var dataset = bigChart.data.datasets[0];
-        dataset.borderColor = textColor;
-        dataset.backgroundColor = textColor;
-        dataset.fontColor = textColor;
+        bigChart.options.borderColor = redColor;
+        bigChart.options.backgroundColor = redColor;
+        bigChart.options.titleFontColor = textColor;
+        bigChart.options.bodyFontColor = textColor;
+        bigChart.data.datasets[0].borderColor = textColor;
+        bigChart.data.datasets[0].backgroundColor = textColor;
+        bigChart.data.datasets[0].fontColor = textColor;
         bigChart.update();
     }
 
