@@ -18,6 +18,7 @@ $(document).ready(function() {
     for (i = 0; i < topCoinAmount; i++) {
         addCoinToDashboard(topCoins[i]);
     }
+
     $("#coinSearch").keyup(function() {
       let foundCoins = searchCoin($("#coinSearch").val());
       console.log(foundCoins)
@@ -104,24 +105,28 @@ function getAllCoins() {
     return "/coins/list";
 }
 
+function getPriceUpdate(coinId) {
+    return "/simple/price?ids=" + coinId + "&vs_currencies=" + currency[1];
+}
+
 function getTopCoins(amount, curr) {
     return "/coins/markets?vs_currency=" + currency[1] + "&order=market_cap_desc&per_page=" + amount + "&page=" + pageCount + "&sparkline=true&price_change_percentage=1h,24h,7d&";
 }
 
-function getCoinMarket(coin, curr, days) {
-  return "/coins/" + coin + "/market_chart?vs_currency=" + currency[1] + "&days="+days+"";
+function getCoinMarket(coinId, curr, days) {
+  return "/coins/" + coinId + "/market_chart?vs_currency=" + currency[1] + "&days="+days+"";
 }
 
-function getCoinInfo(coin) {
-    return "/coins/" + coin + "?vs_currency=" + currency[1] + "&sparkline=true";
+function getCoinInfo(coinId) {
+    return "/coins/" + coinId + "?vs_currency=" + currency[1] + "&sparkline=true";
 }
 
-function getCoinInfo(coin) {
-    return "/coins/" + coin + "?vs_currency=" + currency[1] + "&sparkline=true";
+function getCoinInfo(coinId) {
+    return "/coins/" + coinId + "?vs_currency=" + currency[1] + "&sparkline=true";
 }
 
-function getCoinHistory(coin, date) {
-    return "/coins/" + coin + "/history?date=" + date;
+function getCoinHistory(coinId, date) {
+    return "/coins/" + coinId + "/history?date=" + date;
 }
 
 function changePage(nextPage) {
@@ -175,6 +180,16 @@ function addCoinToDashboard(coin) {
     $(".dashboard").append('</a></div>')
 }
 
+function updatePrice(coinId, symbol) {
+  if ($("#currentPrice")) {
+    let price = JSON.parse(httpGet(geckoApiLink + getPriceUpdate(coinId)));
+    $("#currentPrice").text("Current price of " + symbol + ": " + currency[0]+price[coinId][currency[1]].toLocaleString("en"));
+    console.log("Current price of " + symbol + ": " + currency[0]+price[coinId][currency[1]].toLocaleString("en"))
+    setTimeout(function(){updatePrice(coinId,symbol);},1000);
+  }
+}
+
+
 function showCoin(coinId) {
     let coinInfo = JSON.parse(httpGet(geckoApiLink + getCoinInfo(coinId)))
     console.log(coinInfo)
@@ -184,10 +199,10 @@ function showCoin(coinId) {
     $(".dashboard").append('<div class="coin">     <a  class="name" onclick="sortByRank(true)" style="margin-left: 48px">Go back </a>      </div>');
     let newCanvas = document.createElement('CANVAS');
     newCanvas.id = coinInfo["id"];
-    $(".dashboard").append('<div class="coinWrapper"><div class="full"> <canvas id="' + coinInfo["id"] + '"></canvas></div><div class="sideInfo"><a>Current price of '+coinInfo["symbol"] + ': ' + currency[0] + coinInfo["market_data"]["current_price"][currency[1]].toLocaleString('en') + '</a><br><a>Highest last 24 hr: ' + currency[0] + coinInfo["market_data"]["high_24h"][currency[1]].toLocaleString('en') + '</a><br><a>Lowest last 24 hr: ' + currency[0] + coinInfo["market_data"]["low_24h"][currency[1]].toLocaleString('en') + '</a><br><a>Difference between: ' + currency[0] + (parseFloat(coinInfo["market_data"]["high_24h"][currency[1]]-coinInfo["market_data"]["low_24h"][currency[1]])).toLocaleString('en') + '</a><br><a>Market cap: '+ currency[0] + coinInfo["market_data"]["market_cap"][currency[1]].toLocaleString('en') + '</a><br><a>Volume: '+ currency[0] + coinInfo["market_data"]["total_volume"][currency[1]].toLocaleString('en') + '</a><br><a>Price change 1h: <a style="color:'+((coinInfo["market_data"]["price_change_percentage_1h_in_currency"][currency[1]] > 0) ? 'var(--green)' : 'var(--red)')+';">' + coinInfo["market_data"]["price_change_percentage_1h_in_currency"][currency[1]] + '</a>%</a><br><a>Price change 24h: <a style="color:'+((coinInfo["market_data"]["price_change_percentage_24h_in_currency"][currency[1]] > 0) ? 'var(--green)' : 'var(--red)')+';">' + coinInfo["market_data"]["price_change_percentage_24h_in_currency"][currency[1]] + '</a>%</a><br><a>Price change 7d: <a style="color:'+((coinInfo["market_data"]["price_change_percentage_7d_in_currency"][currency[1]] > 0) ? 'var(--green)' : 'var(--red)')+';">' + coinInfo["market_data"]["price_change_percentage_7d_in_currency"][currency[1]] + '</a>%</a><br><a>Market cap rank: #' + coinInfo["market_data"]["market_cap_rank"] + '</a><br><a>All time high: ' + currency[0] + coinInfo["market_data"]["ath"][currency[1]].toLocaleString('en') + '</a><br><a>All time high change: <a style="color:' + ((coinInfo["market_data"]["ath_change_percentage"][currency[1]] > 0) ? 'var(--green)' : 'var(--red)') +'">' + coinInfo["market_data"]["ath_change_percentage"][currency[1]].toLocaleString('en') + '</a>%</a></div></div><div class="coinDescription"><div ><a style="color:var(--red)">Coin info: </a>'+coinInfo["description"]['en']+'</div></div><div class="coinDescription small"><div><a style="color:var(--red)">Coin media:<br> </a><a href="'+coinInfo["links"]['homepage'][0]+'">Website</a><br><a href="'+coinInfo["links"]['blockchain_site'][0]+'">Blockchain scan site</a><br><a href="https://twitter.com/'+coinInfo["links"]['twitter_screen_name']+'">Twitter</a><br><a href="https://facebook.com/'+coinInfo["links"]['facebook_username']+'">Facebook</a><br>'+(coinInfo["links"]['subreddit_url'] ? "<a href=" + coinInfo["links"]['subreddit_url']+">Reddit</a><br>" : "")+(coinInfo["links"]['official_forum_url'][0] ? "<a href=" + coinInfo["links"]['official_forum_url'][0] +">Forum</a><br>" : "")+'</div></div><div class="likePercentageBarRed"><div class="likePercentageBarGreen" style="width:'+(100-coinInfo["sentiment_votes_down_percentage"])+'%"><a>Coingecko community likes today</a></div></div>');
+    $(".dashboard").append('<div class="coinWrapper"><div class="full"> <canvas id="' + coinInfo["id"] + '"></canvas></div><div class="sideInfo"><a id="currentPrice">Current price of '+coinInfo["symbol"] + ': ' + currency[0] + coinInfo["market_data"]["current_price"][currency[1]].toLocaleString('en') + '</a><br><a>Highest last 24 hr: ' + currency[0] + coinInfo["market_data"]["high_24h"][currency[1]].toLocaleString('en') + '</a><br><a>Lowest last 24 hr: ' + currency[0] + coinInfo["market_data"]["low_24h"][currency[1]].toLocaleString('en') + '</a><br><a>Difference between: ' + currency[0] + (parseFloat(coinInfo["market_data"]["high_24h"][currency[1]]-coinInfo["market_data"]["low_24h"][currency[1]])).toLocaleString('en') + '</a><br><a>Market cap: '+ currency[0] + coinInfo["market_data"]["market_cap"][currency[1]].toLocaleString('en') + '</a><br><a>Volume: '+ currency[0] + coinInfo["market_data"]["total_volume"][currency[1]].toLocaleString('en') + '</a><br><a>Price change 1h: <a style="color:'+((coinInfo["market_data"]["price_change_percentage_1h_in_currency"][currency[1]] > 0) ? 'var(--green)' : 'var(--red)')+';">' + coinInfo["market_data"]["price_change_percentage_1h_in_currency"][currency[1]] + '</a>%</a><br><a>Price change 24h: <a style="color:'+((coinInfo["market_data"]["price_change_percentage_24h_in_currency"][currency[1]] > 0) ? 'var(--green)' : 'var(--red)')+';">' + coinInfo["market_data"]["price_change_percentage_24h_in_currency"][currency[1]] + '</a>%</a><br><a>Price change 7d: <a style="color:'+((coinInfo["market_data"]["price_change_percentage_7d_in_currency"][currency[1]] > 0) ? 'var(--green)' : 'var(--red)')+';">' + coinInfo["market_data"]["price_change_percentage_7d_in_currency"][currency[1]] + '</a>%</a><br><a>Market cap rank: #' + coinInfo["market_data"]["market_cap_rank"] + '</a><br><a>All time high: ' + currency[0] + coinInfo["market_data"]["ath"][currency[1]].toLocaleString('en') + '</a><br><a>All time high change: <a style="color:' + ((coinInfo["market_data"]["ath_change_percentage"][currency[1]] > 0) ? 'var(--green)' : 'var(--red)') +'">' + coinInfo["market_data"]["ath_change_percentage"][currency[1]].toLocaleString('en') + '</a>%</a></div></div><div class="coinDescription"><div ><a style="color:var(--red)">Coin info: </a>'+coinInfo["description"]['en']+'</div></div><div class="coinDescription small"><div><a style="color:var(--red)">Coin media:<br> </a><a href="'+coinInfo["links"]['homepage'][0]+'">Website</a><br><a href="'+coinInfo["links"]['blockchain_site'][0]+'">Blockchain scan site</a><br><a href="https://twitter.com/'+coinInfo["links"]['twitter_screen_name']+'">Twitter</a><br><a href="https://facebook.com/'+coinInfo["links"]['facebook_username']+'">Facebook</a><br>'+(coinInfo["links"]['subreddit_url'] ? "<a href=" + coinInfo["links"]['subreddit_url']+">Reddit</a><br>" : "")+(coinInfo["links"]['official_forum_url'][0] ? "<a href=" + coinInfo["links"]['official_forum_url'][0] +">Forum</a><br>" : "")+'</div></div><div class="likePercentageBarRed"><div class="likePercentageBarGreen" style="width:'+(100-coinInfo["sentiment_votes_down_percentage"])+'%"><a>Coingecko community likes today</a></div></div>');
     exchangeRate = parseFloat(coinInfo["market_data"]["current_price"]["usd"]) / parseFloat(coinInfo["market_data"]["current_price"][currency[1]]);
-
-
+    setTimeout(function(){updatePrice(coinInfo["id"],coinInfo["symbol"]);},1000);
+    
     let sparkline = coinInfo["market_data"]["sparkline_7d"]["price"].map(i => parseFloat(i));
 
 
@@ -311,7 +326,7 @@ function drawChart(coinId, sparkline) {
             },
             title: {
                 display: true,
-                text: coinId + ' price in ' + currency[0]
+                text: coinId + ' price in ' + currency[1].toUpperCase()
             },
             legend: {
                 display: false,

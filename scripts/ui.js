@@ -14,8 +14,15 @@ function changeCurrency(cur) {
         currency[1] = "eur";
     } else if (currency[0] == "£") {
         currency[1] = "gbp";
+    } else if (currency[0] == "BTC ") {
+        currency[1] = "btc";
+    } else if (currency[0] == "ETH ") {
+        currency[1] = "eth";
+    } else if (currency[0] == "BNB ") {
+        currency[1] = "bnb";
+    } else if (currency[0] == "DOT ") {
+        currency[1] = "dot";
     }
-
     $(".dashboard").empty();
     $(".dashboard").append('<div class="coin">     <a  class="name" onclick="sortByRank(true)" style="margin-left: 48px">Coin </a>      <a  onclick="sortByPrice(false)">Price per coin</a> <a  onclick="sortByPriceChange1h(false)">Change 1 hrs</a>  <a onclick="sortByPriceChange24h(false)">Change 24 hrs</a><a onclick="sortByPriceChange7d(false)">Change 7 days</a><a onclick="sortByTotalVolume(false)">Total volume</a><a onclick="sortByPriceChange7d(false)">7 day graph</a></div>');
     topCoins = JSON.parse(httpGet(geckoApiLink + getTopCoins(topCoinAmount, pageCount)));
