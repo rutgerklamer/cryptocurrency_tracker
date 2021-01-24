@@ -306,7 +306,11 @@ function getSparklineLabels(arr, hours) {
     for (i = 0; i < arr.length; i++) {
         var date = new Date();
         console.log(i + " - " + hours + " - " + parseFloat(i/hours))
-        date.setHours(date.getHours() - hours + parseFloat(i));
+        if (hours != 24) {
+          date.setHours(date.getHours() - hours + parseFloat(i));
+        } else {
+          date.setHours(date.getHours() - hours + parseFloat(i/24));
+        }
         const options = {
             weekday: 'long',
             year: 'numeric',
