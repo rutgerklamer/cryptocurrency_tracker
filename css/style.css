@@ -52,7 +52,7 @@ body {
   text-align: left;
 }
 
-.coin:hover {
+.coin.fully:hover {
   background-color: var(--infoColorSelect);
 }
 
@@ -74,6 +74,7 @@ body {
 
 .coin a:hover,.settings a:hover {
   cursor: pointer;
+  background-color: var(--infoColorSelect);
 }
 
 
