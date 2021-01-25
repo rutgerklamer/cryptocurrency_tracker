@@ -225,7 +225,6 @@ function showCoin(coinId) {
 
 
     $(".dashboard").empty();
-    console.log(canvasId)
     $(".dashboard").append('<div class="coin">     <a   onclick="sortByRank(true)" >Go back </a><a   onclick="changeGraph(&apos;'+coinInfo["id"]+'&apos;,24)">Get 24h graph </a><a  onclick="changeGraph('+coinInfo["id"]+',168)">Get 7 day graph </a><a  onclick="changeGraph('+coinInfo["id"]+',720)">Get 30 day graph </a><a onclick="changeGraph('+coinInfo["id"]+',1440)">Get 60 day graph </a>       </div>');
     let newCanvas = document.createElement('CANVAS');
     newCanvas.id = coinInfo["id"];
